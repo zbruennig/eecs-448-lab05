@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <title>View User Posts</title>
+</head>
+<body>
+  <form action="ViewUserPosts.php" method="post" style="margin:30px">
+      <?php
+        $mysqli = new mysqli("mysql.eecs.ku.edu","zbruennig","P@\$\$word123","zbruennig");
+        if($mysqli->connect_errno) {
+          printf("Connection failed: %s\n", $mysqli->connect_error);
+          exit();
+        }
+
+        $query = ("SELECT user_id FROM Users");
+        $results = $mysqli->query($query);
+
+        if($results->num_rows == 0){
+          exit();
+        }
+
+        echo "<select name='user'>";
+        while($row = $results->fetch_assoc()) {
+        $user_id = $row["user_id"];
+        echo "<option value='" . $user_id . "'>" . $user_id . "</option>";
+        }
+        echo "</select>";
+        $results->free();
+      ?>
+      <br><br>
+      <input type="submit" value="Select">
+  </form>
+</body>
+</html>

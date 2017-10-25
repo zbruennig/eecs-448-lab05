@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <title>Delete Posts</title>
+</head>
+<body>
+  <form action="DeletePost.php" method="post">
+    <table style="margin:24px;border-collapse:separate;border-spacing:12px">
+      <?php
+        $mysqli = new mysqli("mysql.eecs.ku.edu","zbruennig","P@\$\$word123","zbruennig");
+        if($mysqli->connect_errno) {
+          printf("Connection failed: %s\n", $mysqli->connect_error);
+          exit();
+        }
+
+        $query = ("SELECT * FROM Posts ORDER BY author_id ASC");
+        $results = $mysqli->query($query);
+
+        if($results->num_rows == 0){
+          exit();
+        }
+        echo("<tr><td></td><td>Author</td><td>Post</td></tr>");
+        while($row = $results->fetch_assoc()) {
+          echo("<tr>");
+          echo("<td> <input type='checkbox' name='" . $row[post_id] . "'> </td>");
+          echo("<td>" . $row["author_id"] . "</td>");
+          echo("<td>" . $row["content"] ."</td>");
+          echo("</tr>");
+        }
+      ?>
+    </table>
+    <input type="submit" value="Delete" style="margin-left:36px">
+  </form>
+</body>
